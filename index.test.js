@@ -1,6 +1,6 @@
 let shuffle = require('./index')
 
-// Produce the array of numbers [0, 1, ..., n]
+// Produce the array of numbers [0, 1, ..., n - 1]
 let range = (n) => Array(n).fill().map((x, idx) => idx)
 
 // Call f() n times.
