@@ -46,6 +46,7 @@ test('shuffled array does not equal original', () => {
 	})
 })
 
+// One naive (and wrong) shuffling algorithm
 function naiveShuffle(a) {
 	let result = [...a]
 
@@ -64,6 +65,13 @@ function naiveShuffle(a) {
 	}
 
 	return result
+}
+
+// Another naive (and wrong) shuffling algorighm
+function naiveShuffle2(a) {
+	let result = [...a]
+
+	return result.sort(() => Math.random())
 }
 
 // Shuffles a n times with f and returns an array of the results
@@ -109,8 +117,18 @@ function rds(values) {
 	return Math.abs(stddev(values) / average(values))
 }
 
-test('RDS of amounts of different permutations is large with a naive algorithm', () => {
-	// With naive shuffle, the result is usually something close to 0.17
+test('RDS of amounts of different permutations is large with a naive algorithm', () => { // With naive shuffle, the result is usually something close to 0.17
+	const MIN_RDS = 0.15
+	let counts = perms(range(4), 100000, naiveShuffle)
+	let relativeStandardDeviation = rds(Object.values(counts))
+	if (relativeStandardDeviation < MIN_RDS) {
+		console.log('RDS too low, results', counts)
+	}
+
+	expect(relativeStandardDeviation).toBeGreaterThanOrEqual(MIN_RDS)
+})
+
+test('RDS of amounts of different permutations is large with a naive algorithm 2', () => { // With naive shuffle, the result is usually something close to 0.17
 	const MIN_RDS = 0.15
 	let counts = perms(range(4), 100000, naiveShuffle)
 	let relativeStandardDeviation = rds(Object.values(counts))
