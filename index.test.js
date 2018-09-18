@@ -1,3 +1,5 @@
+/* globals require, test, expect, console */
+
 let shuffle = require('./index')
 
 // Produce the array of numbers [0, 1, ..., n - 1]
@@ -6,7 +8,7 @@ let range = (n) => Array(n).fill().map((x, idx) => idx)
 // Call f() n times.
 function times(n, f) {
 	while (n--) {
-		f();
+		f()
 	}
 }
 
@@ -46,6 +48,19 @@ test('shuffled array does not equal original', () => {
 	})
 })
 
+function brokenShuffle(a) {
+	let result = [...a]
+	return result.reverse()
+}
+
+function brokenShuffle2(a) {
+	let result = [...a]
+	let tmp = result[0]
+	result[0] = result[result.length - 1]
+	result[result.length - 1] = tmp
+	return result
+}
+
 // One naive (and wrong) shuffling algorithm
 function naiveShuffle(a) {
 	let result = [...a]
@@ -71,7 +86,7 @@ function naiveShuffle(a) {
 function naiveShuffle2(a) {
 	let result = [...a]
 
-	return result.sort(() => Math.random())
+	return result.sort(() => Math.random() - 0.5)
 }
 
 // Shuffles a n times with f and returns an array of the results
@@ -117,7 +132,25 @@ function rds(values) {
 	return Math.abs(stddev(values) / average(values))
 }
 
-test('RDS of amounts of different permutations is large with a naive algorithm', () => { // With naive shuffle, the result is usually something close to 0.17
+// A number in the range [-1, 1] that measures how ordered an array is.
+// An adjacent pair in the array [x, y] with x < y increases the number
+// and an adjacent pair in the array [x, y] with y > x decreases it.
+// 1: completely ordered array
+// -1: completely ordered array (in reverse order)
+// 0: no order at all (e.g. [1,1,1,1,1] and [1,5,2,4,3]) both have orderliness of 0
+function orderliness(a) {
+	let sum = 0
+	for (let i = 0; i < a.length - 1; i++) {
+		let x = a[i]
+		let y = a[i + 1]
+		sum += x < y ? 1 : x > y ? -1 : 0
+	}
+
+	return sum / (a.length - 1)
+}
+
+test('RDS of amounts of different permutations is large with a naive algorithm', () => {
+	// With naive shuffle, the result is usually something close to 0.17
 	const MIN_RDS = 0.15
 	let counts = perms(range(4), 100000, naiveShuffle)
 	let relativeStandardDeviation = rds(Object.values(counts))
@@ -129,8 +162,9 @@ test('RDS of amounts of different permutations is large with a naive algorithm',
 })
 
 test('RDS of amounts of different permutations is large with a naive algorithm 2', () => { // With naive shuffle, the result is usually something close to 0.17
-	const MIN_RDS = 0.15
-	let counts = perms(range(4), 100000, naiveShuffle)
+	// With naive shuffle 2, the result is usually something close to 0.17
+	const MIN_RDS = 0.5
+	let counts = perms(range(4), 100000, naiveShuffle2)
 	let relativeStandardDeviation = rds(Object.values(counts))
 	if (relativeStandardDeviation < MIN_RDS) {
 		console.log('RDS too low, results', counts)
@@ -152,7 +186,8 @@ test('shuffle should produce all permutations with enough iterations', () => {
 
 test('RDS of amounts of different permutations is small enough', () => {
 	// The relative standard deviation of amounts of shuffled values must not exceed this limit
-	const MAX_RDS = 0.05
+	// Usually it's about 0.015 - a statistician would be needed to tell if it's ok
+	const MAX_RDS = 0.03
 	let counts = perms(range(4), 100000, shuffle)
 	let relativeStandardDeviation = rds(Object.values(counts))
 	if (relativeStandardDeviation > MAX_RDS) {
@@ -162,3 +197,19 @@ test('RDS of amounts of different permutations is small enough', () => {
 	expect(relativeStandardDeviation).toBeLessThanOrEqual(MAX_RDS)
 })
 
+test('orderliness of shuffled array is small', () => {
+	// With 1000 iterations, orderliness often exceeds 0.05,
+	// but even with 10000 iterations, it doesn't exceed 0.1
+	let MAX_ORDERLINESS = 0.1
+
+	times(10000, () => {
+		let r = range(1000)
+		let shuffled = shuffle(r)
+		expect(Math.abs(orderliness(shuffled))).toBeLessThanOrEqual(MAX_ORDERLINESS)
+	})
+})
+
+test('orderliness fails with broken shuffles', () => {
+	expect(orderliness(brokenShuffle(range(1000)))).toBeLessThan(-0.9)
+	expect(orderliness(brokenShuffle2(range(1000)))).toBeGreaterThan(0.9)
+})

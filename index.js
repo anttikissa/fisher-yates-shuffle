@@ -21,4 +21,3 @@ function shuffle(a, options = { inPlace: false }) {
 }
 
 module.exports = shuffle
-
