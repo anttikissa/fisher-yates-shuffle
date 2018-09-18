@@ -17,6 +17,15 @@ function shuffle(a, options = { inPlace: false }) {
 		let randomIndex = random(i + 1)
 		swap(result, i, randomIndex)
 	}
+
+	// This does it in the opposite order.
+	// You see why the original algorithm chose to do it from end to beginning,
+	// since the computation of randomIndex seems complicated in this version.
+	// for (let i = 0; i < a.length; i++) {
+	// 	let randomIndex = a.length - 1 - random(a.length - i)
+	// 	swap(result, i, randomIndex)
+	// }
+
 	return result
 }
 
