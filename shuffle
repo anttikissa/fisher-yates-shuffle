@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+/* globals require */
+
+let fs = require('fs')
+let shuffle = require('.')
+let process = require('process')
+
+/* eslint-disable */
+let log = console.log
+/* eslint-enable */
+
+function readLinesSync(filename) {
+	let content = fs.readFileSync(filename, 'utf-8')
+	let contentWithoutLastNewline = content.replace(/\n$/g, '')
+	let lines = contentWithoutLastNewline.split('\n')
+	return lines
+}
+
+let args = process.argv.slice(2)
+
+// 'shuffle' is equivalent to 'shuffle -'
+if (args.length === 0) {
+	args = ['-']
+}
+
+let mode = 'read files'
+
+let lines = []
+for (let arg of args) {
+	if (arg === '-') {
+		arg = '/dev/stdin'
+	}
+	if (arg === '--') {
+		mode = 'read args'
+		continue
+	}
+	if (mode === 'read files') {
+		try {
+			lines = lines.concat(readLinesSync(arg))
+		} catch (err) {
+			log(`Could not read file ${arg}`)
+		}
+	} else if (mode === 'read args') {
+		lines.push(arg)
+	} else {
+		throw new Error('bug')
+	}
+}
+
+shuffle(lines, { inPlace: true })
+
+for (let line of lines) {
+	log(line)
+}

@@ -1,21 +1,24 @@
 {
-  "name": "@anttikissa/fisher-yates-shuffle",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "engines": {
-    "node": ">=8"
-  },
-  "devDependencies": {
-    "eslint": "^5.6.0",
-    "jest": "^23.6.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/anttikissa/fisher-yates-shuffle.git"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "public"
-  }
+	"name": "@anttikissa/fisher-yates-shuffle",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"engines": {
+		"node": ">=8"
+	},
+	"devDependencies": {
+		"eslint": "^5.6.0",
+		"jest": "^23.6.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/anttikissa/fisher-yates-shuffle.git"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/",
+		"access": "public"
+	},
+	"bin": {
+		"shuffle": "./shuffle"
+	}
 }
