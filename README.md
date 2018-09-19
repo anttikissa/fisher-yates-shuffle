@@ -1,7 +1,7 @@
 # shuffle - shuffle an array (JavaScript implementation)
 
-Uses the (Fisher-Yates shuffle)
-[https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle] for
+Uses the [Fisher-Yates
+shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle) for
 grandiosely random results.
 
 # Usage (JS)
