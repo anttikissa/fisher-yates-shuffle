@@ -6,7 +6,7 @@ function swap(a, i, j) {
 
 // Returns an integer in [0, n[
 function random(n) {
-	return Math.random() * n | 0
+	return (Math.random() * n) | 0
 }
 
 function shuffle(a, options = { inPlace: false }) {
@@ -29,4 +29,5 @@ function shuffle(a, options = { inPlace: false }) {
 	return result
 }
 
+/* globals module */
 module.exports = shuffle
