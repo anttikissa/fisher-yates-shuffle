@@ -1,16 +1,35 @@
-# Shuffle an array into a random order
+# shuffle - shuffle an array (JavaScript implementation)
 
-I heard about Fisher-Yates shuffle yesterday (also known as Knuth
-shuffle, despite the computerized version having been invented by
-Richard Durstenfeld). I wrote this as a test to check if I can still
-write the algorithm correctly, and secondly to see how the randomness of
-shuffling algorithms could be tested.
+Uses the (Fisher-Yates shuffle)
+[https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle] for
+grandiosely random results.
 
-# How to
+# Usage (JS)
 
-	let shuffle = require('fisher-yeates-shuffle')
+	yarn add @anttikissa/fisher-yates-shuffle
+
+	let shuffle = require('fisher-yates-shuffle')
 	shuffle([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ])
 	//   => [ 8, 1, 6, 3, 5, 7, 9, 4, 2 ]
+
+# Usage (CLI tool)
+
+	# Install globally
+	yarn global add @anttikissa/fisher-yates-shuffle
+
+	# shuffle lines in file.txt
+	shuffle file.txt
+
+	# shuffle lines from stdin
+	ls | shuffle
+
+	# shuffle arguments on the command line
+	shuffle -- 1 2 3 "one two three"
+	# =>
+	one two three
+	2
+	1
+	3
 
 # Test
 
@@ -23,6 +42,3 @@ run the tests again.
 	yarn
 	./test
 
-# Read more at
-
-https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
