@@ -188,7 +188,7 @@ test('RDS of amounts of different permutations is small enough, first step', () 
 	// The relative standard deviation of amounts of shuffled values must not exceed this limit
 	// Usually it's about 0.015 - a statistician would be needed to tell if it's ok
 	const MAX_RDS = 0.03
-	let counts = perms(range(3), 10000, shuffle)
+	let counts = perms(range(3), 20000, shuffle)
 	let relativeStandardDeviation = rds(Object.values(counts))
 	if (relativeStandardDeviation > MAX_RDS) {
 		console.log('RDS too high, results', counts)
