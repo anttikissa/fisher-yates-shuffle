@@ -1,5 +1,5 @@
 {
-  "name": "fisher-yates-shuffle",
+  "name": "@anttikissa/fisher-yates-shuffle",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
