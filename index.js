@@ -4,9 +4,16 @@ function swap(a, i, j) {
 	a[j] = tmp
 }
 
+// Math.random, or a drop-in replacement
+let mathRandom = Math.random
+
+function setRandom(random) {
+	mathRandom = random
+}
+
 // Returns an integer in [0, n[
 function random(n) {
-	return (Math.random() * n) | 0
+	return (mathRandom() * n) | 0
 }
 
 function shuffle(a, options = { inPlace: false }) {
@@ -31,3 +38,4 @@ function shuffle(a, options = { inPlace: false }) {
 
 /* globals module */
 module.exports = shuffle
+module.exports.setRandom = setRandom

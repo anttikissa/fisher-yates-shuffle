@@ -226,3 +226,20 @@ test('orderliness fails with broken shuffles', () => {
 	expect(orderliness(brokenShuffle(range(1000)))).toBeLessThan(-0.9)
 	expect(orderliness(brokenShuffle2(range(1000)))).toBeGreaterThan(0.9)
 })
+
+test('injecting a random function', () => {
+	let r = 0
+	// A very bad random function
+	function random() {
+		r = (r + 0.1) % 1
+		return r
+	}
+
+	shuffle.setRandom(random)
+
+	expect(shuffle([0,1,2,3,4,5,6,7,8,9])).toEqual([0,8,4,6,5,3,7,2,9,1])
+
+	// If this test somehow runs before others, restore the usual
+	// Math.random just in case
+	shuffle.setRandom(Math.random)
+})
